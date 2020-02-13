@@ -13,7 +13,6 @@ fn main() {
         go!(move || {
             get_primes(1 + (2 * &i) as u64, (&num_threads * 2) as u64, 2_000_000, &tx);
         });
-        println!("Started thread {}", i);
     }
     let time_start = Instant::now();
     let mut primes: Vec<u64> = vec![];
@@ -26,7 +25,6 @@ fn main() {
             Err(_) => break,
             Ok(prime) => {
                 primes.push(prime);
-                println!("\r{: <30}", prime);
             }
         }
     }
@@ -34,7 +32,6 @@ fn main() {
     for prime in primes {
         prime_sum += prime as u128;
     }
-    println!();
     println!("Prime Sum: {}", prime_sum);
     println!("Solution took: {} ms", time_start.elapsed().as_millis())
 }
@@ -42,7 +39,6 @@ fn main() {
 /// Calculates primes and increases by incr with every iteration
 /// Resulting prime numbers are sent via the tx sender.
 fn get_primes(start: u64, incr: u64, stop_after: u64, tx: &Sender<u64>) {
-    println!("Hi, I'm a thread.");
     let mut num = start;
     while num < stop_after {
         let mut is_prime = true;
