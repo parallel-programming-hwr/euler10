@@ -15,22 +15,20 @@ fn main() {
         });
     }
     let time_start = Instant::now();
-    let mut primes: Vec<u64> = vec![];
-    primes.push(2);
+    let mut prime_sum: u128 = 2;
     // receives all prime numbers via the channel receiver.
     // The received prime numbers are stored in a vector
     loop {
-        let result = rx.recv_timeout(Duration::from_millis(10));
+        let result = rx.recv_timeout(Duration::from_millis(1));
         match result {
-            Err(_) => break,
+            Err(e) => {
+                println!("{}", e);
+                break
+            },
             Ok(prime) => {
-                primes.push(prime);
+                prime_sum += prime as u128;
             }
         }
-    }
-    let mut prime_sum: u128 = 0;
-    for prime in primes {
-        prime_sum += prime as u128;
     }
     println!("Prime Sum: {}", prime_sum);
     println!("Solution took: {} ms", time_start.elapsed().as_millis())
