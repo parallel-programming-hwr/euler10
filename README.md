@@ -1,6 +1,9 @@
-# Primes with rust
+# Euler Problem 10 - Summation of Primes
 
-A simple program that calculates prime numbers with multithreading. The resulting numbers are written to stdout and to the file primes.txt.
+> The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
+> 
+> Find the sum of all the primes below two million.
+
 
 ## Usage
 
@@ -9,5 +12,5 @@ A simple program that calculates prime numbers with multithreading. The resultin
 cargo build --release
 
 # run
-./target/release/euler-10 [<start number>]
+./target/release/euler-10
 ```
