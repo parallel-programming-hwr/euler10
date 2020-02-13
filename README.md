@@ -9,5 +9,5 @@ A simple program that calculates prime numbers with multithreading. The resultin
 cargo build --release
 
 # run
-./target/release/primes [<start number>]
+./target/release/euler-10 [<start number>]
 ```

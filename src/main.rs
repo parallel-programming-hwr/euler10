@@ -1,26 +1,17 @@
 use may::go;
 use may::sync::mpmc::{channel, Sender};
 use num_cpus;
-use std::env;
 use std::time::{Instant, Duration};
 
 fn main() {
     may::config().set_workers(num_cpus::get());
     let (tx, rx) = channel::<u64>();
     let num_threads: u16 = num_cpus::get() as u16;
-    let mut start: u64 = 1;
-    let args: Vec<String> = env::args().collect();
-    if args.len() > 1 {
-        start = args[1].parse::<u64>().unwrap();
-    }
-    if &start % 2 == 0 {
-        start += 1;
-    }
     println!("Starting {} threads", num_threads);
     for i in 0u16..num_threads {
         let tx = tx.clone();
         go!(move || {
-            get_primes(start + (2 * &i) as u64, (&num_threads * 2) as u64, 2_000_000, &tx);
+            get_primes(1 + (2 * &i) as u64, (&num_threads * 2) as u64, 2_000_000, &tx);
         });
         println!("Started thread {}", i);
     }
