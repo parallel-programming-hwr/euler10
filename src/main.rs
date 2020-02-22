@@ -1,7 +1,7 @@
 use may::go;
 use may::sync::mpmc::{channel, Sender};
 use num_cpus;
-use std::time::{Instant, Duration};
+use std::time::{Instant};
 
 fn main() {
     may::config().set_workers(num_cpus::get());
@@ -14,21 +14,13 @@ fn main() {
             get_primes(1 + (2 * &i) as u64, (&num_threads * 2) as u64, 2_000_000, &tx);
         });
     }
+    std::mem::drop(tx);
     let time_start = Instant::now();
     let mut prime_sum: u128 = 2;
     // receives all prime numbers via the channel receiver.
     // The received prime numbers are stored in a vector
-    loop {
-        let result = rx.recv_timeout(Duration::from_millis(1));
-        match result {
-            Err(e) => {
-                println!("{}", e);
-                break
-            },
-            Ok(prime) => {
-                prime_sum += prime as u128;
-            }
-        }
+    for prime in rx {
+        prime_sum += prime as u128;
     }
     println!("Prime Sum: {}", prime_sum);
     println!("Solution took: {} ms", time_start.elapsed().as_millis())
